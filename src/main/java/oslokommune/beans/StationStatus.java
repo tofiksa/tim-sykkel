@@ -5,28 +5,28 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.stereotype.Component;
 import oslokommune.keys.StationKeys;
 
-import java.util.List;
+import java.io.Serializable;
+
 
 @Component
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class BikeStations {
+public class StationStatus implements Serializable {
 
-    @JsonProperty(StationKeys.STATIONS)
-    private List<Station> stations;
+    @JsonProperty(StationKeys.STATUS)
+    private Status status;
 
-    public List<Station> getStations() {
-        return stations;
+    public Status getStatus() {
+        return status;
     }
 
-    public void setStations(List<Station> stations) {
-        this.stations = stations;
+    public void setStatus(Status status) {
+        this.status = status;
     }
-
 
     @Override
     public String toString() {
-        return "BikeStations{" +
-                "stations=" + stations +
+        return "StationStatus{" +
+                "status=" + status +
                 '}';
     }
 }

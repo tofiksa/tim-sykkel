@@ -24,7 +24,7 @@ public class StationAvailability implements Serializable{
     private double refresh_rate;
 
     @JsonProperty(StationKeys.AVAILABILITY)
-    private List<Bike> bike;
+    private Bike bike;
 
 
     public String getUpdated_at() {
@@ -51,11 +51,11 @@ public class StationAvailability implements Serializable{
         this.id = id;
     }
 
-    public List<Bike> getBike() {
+    public Bike getBike() {
         return bike;
     }
 
-    public void setBike(List<Bike> bike) {
+    public void setBike(Bike bike) {
         this.bike = bike;
     }
 

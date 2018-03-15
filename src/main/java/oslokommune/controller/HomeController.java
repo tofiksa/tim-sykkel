@@ -24,43 +24,78 @@ public class HomeController {
     @Autowired
     private Station station;
 
+    @Autowired
+    private StationAvailability stationAvailability;
+
     @GetMapping("/Alle-stasjoner")
     public String AlleStasjoner(Model model) {
 
-        List<Station> allStations = null;
+        List<Station> stations = getStations();
+        model.addAttribute("allstations",stations);
 
+        return "Alle-stasjoner";
+    }
+
+    public List<Station> getStations() {
+
+        List<Station> allStations = null;
+        List<Station> filtered = Lists.newArrayList();
 
         try {
             allStations = unirestClient.getAllStations("/stations",clientsecret).getStations();
-            List<Station> filtered = Lists.newArrayList();
+
 
             for(Station p : allStations) {
 
                 filtered.add(p);
             }
 
-            model.addAttribute("allstations",filtered);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return filtered;
+    }
+
+    public List<StationAvailability> getStationAvailability() {
+
+        List<StationAvailability> allBikes = null;
+        List<StationAvailability> filt = Lists.newArrayList();
+
+        try {
+            allBikes = unirestClient.getAllAvailabilities("/stations/availability",clientsecret).getStationAvailability();
+
+
+            for(StationAvailability p : allBikes) {
+                filt.add(p);
+            }
+
 
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        return "Alle-stasjoner";
+        return filt;
     }
 
     @GetMapping("/Ledige-sykler")
-    public String LedigeSykler (@RequestParam(name="id", required=false, defaultValue="185") int id, Model model) throws Exception {
+    public String LedigeSykler (@RequestParam(name="id", required=false, defaultValue="185") int id, Model model) {
 
-        List<StationAvailability> allBikes = null;
+        List<StationAvailability> allAvailabilities = getStationAvailability();
+        List<Station> stations = getStations();
 
-        try {
-            allBikes = unirestClient.getAllStations("/stations/availability",clientsecret).getStationAvailability();
+        for(StationAvailability sa : allAvailabilities) {
+                if (id == sa.getId()) {
+                    model.addAttribute("allAvailabilities", sa);
 
-            model.addAttribute("availability",allBikes);
+                    for (Station s : stations) {
+                        if (id == s.getId())
+                            model.addAttribute("stations",s);
+                    }
 
-        } catch (Exception e) {
-            e.printStackTrace();
+                }
         }
+
 
         return "Ledige-sykler";
     }
