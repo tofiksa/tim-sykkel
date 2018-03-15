@@ -14,31 +14,31 @@ public class BikeStations {
     @JsonProperty(StationKeys.STATIONS)
     private List<Station> stations;
 
-    @JsonProperty(StationKeys.AVAILABILITY)
-    private Availability availabilities;
-
+    @JsonProperty(StationKeys.STATIONS)
+    private List<StationAvailability> StationAvailability;
 
     public List<Station> getStations() {
         return stations;
+    }
+
+    public List<StationAvailability> getStationAvailability() {
+        return StationAvailability;
+    }
+
+    public void setStationAvailability(List<StationAvailability> stationAvailability) {
+        StationAvailability = stationAvailability;
     }
 
     public void setStations(List<Station> stations) {
         this.stations = stations;
     }
 
-    public Availability getAvailabilities() {
-        return availabilities;
-    }
-
-    public void setAvailabilities(Availability availabilities) {
-        this.availabilities = availabilities;
-    }
 
     @Override
     public String toString() {
         return "BikeStations{" +
                 "stations=" + stations +
-                ", availabilities=" + availabilities +
+                ", StationAvailability=" + StationAvailability +
                 '}';
     }
 }

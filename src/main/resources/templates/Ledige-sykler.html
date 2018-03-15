@@ -6,7 +6,12 @@
 </head>
 <body>
 
-<p th:text="${bikes}">Her og der  </p>
+<table>
+    <tr style="text-align: left;" th:each="avail, iterstat: ${availability}">
+        <th style="text-align: left;" th:text="${avail.id}"></th>
+        <td th:text="${avail.refresh_rate}" th:id="|td${iterstat.index}|"></td>
+    </tr>
+
 
 </body>
 </html>

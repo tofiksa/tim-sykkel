@@ -28,6 +28,9 @@ public class Station implements Serializable {
     @JsonProperty(StationKeys.NUMBER_OF_LOCKS)
     private int number_of_locks;
 
+    @JsonProperty(StationKeys.STATIONS)
+    private StationAvailability stationAvailability;
+
     public int getId() {
         return id;
     }
@@ -72,7 +75,13 @@ public class Station implements Serializable {
         this.number_of_locks = number_of_locks;
     }
 
+    public StationAvailability getBikeStations() {
+        return stationAvailability;
+    }
 
+    public void setBikeStations(StationAvailability bikeStations) {
+        this.stationAvailability = bikeStations;
+    }
 
     @Override
     public String toString() {
@@ -82,6 +91,7 @@ public class Station implements Serializable {
                 ", title='" + title + '\'' +
                 ", subtitle='" + subtitle + '\'' +
                 ", number_of_locks=" + number_of_locks +
+                ", stationAvailability=" + stationAvailability +
                 '}';
     }
 }

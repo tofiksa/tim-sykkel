@@ -7,9 +7,12 @@
 <body>
 
 
-<p th:each="allstation : ${allstations}"
-   th:text="${allstation.title}">
-</p>
+<table>
+<tr style="text-align: left;" th:each="allstation, iterstat: ${allstations}">
+    <th style="text-align: left;" th:text="${allstation.title}"></th>
+    <td th:text="${allstation.subtitle}" th:id="|td${iterstat.index}|"></td>
+</tr>
+</table>
 
 
 

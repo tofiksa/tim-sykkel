@@ -6,21 +6,16 @@ import org.springframework.stereotype.Component;
 import oslokommune.keys.StationKeys;
 
 import java.io.Serializable;
+import java.util.List;
 
 @Component
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Availability implements Serializable{
+public class StationAvailability implements Serializable{
 
     private static final long serialVersionUID = -7254576141070048691L;
 
     @JsonProperty(StationKeys.ID)
     private int id;
-
-    @JsonProperty(StationKeys.BIKES)
-    private int bikes;
-
-    @JsonProperty(StationKeys.LOCKS)
-    private int locks;
 
     @JsonProperty(StationKeys.UPDATED_AT)
     private String updated_at;
@@ -28,21 +23,9 @@ public class Availability implements Serializable{
     @JsonProperty(StationKeys.REFRESH_RATE)
     private double refresh_rate;
 
-    public int getBikes() {
-        return bikes;
-    }
+    @JsonProperty(StationKeys.AVAILABILITY)
+    private List<Bike> bike;
 
-    public void setBikes(int bikes) {
-        this.bikes = bikes;
-    }
-
-    public int getLocks() {
-        return locks;
-    }
-
-    public void setLocks(int locks) {
-        this.locks = locks;
-    }
 
     public String getUpdated_at() {
         return updated_at;
@@ -68,14 +51,21 @@ public class Availability implements Serializable{
         this.id = id;
     }
 
+    public List<Bike> getBike() {
+        return bike;
+    }
+
+    public void setBike(List<Bike> bike) {
+        this.bike = bike;
+    }
+
     @Override
     public String toString() {
-        return "Availability{" +
+        return "StationAvailability{" +
                 "id=" + id +
-                ", bikes=" + bikes +
-                ", locks=" + locks +
                 ", updated_at='" + updated_at + '\'' +
                 ", refresh_rate=" + refresh_rate +
+                ", bike=" + bike +
                 '}';
     }
 }

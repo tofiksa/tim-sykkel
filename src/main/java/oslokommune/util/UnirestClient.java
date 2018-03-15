@@ -5,8 +5,9 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.ObjectMapper;
 import com.mashape.unirest.http.Unirest;
 
-import oslokommune.beans.Availability;
+import oslokommune.beans.Bike;
 import oslokommune.beans.BikeStations;
+import oslokommune.beans.StationAvailability;
 
 
 import java.io.IOException;
@@ -50,13 +51,13 @@ public class UnirestClient {
 
     }
 
-    public Availability getAllAvailabilities(String endpoint, String clientsecret) throws Exception {
-        HttpResponse<Availability> response = Unirest.get(BASE_URI+endpoint)
+    public StationAvailability getAllAvailabilities(String endpoint, String clientsecret) throws Exception {
+        HttpResponse<StationAvailability> response = Unirest.get(BASE_URI+endpoint)
                 .header("accept", "application/json")
                 .header("Content-Type", "application/json")
                 .header("Client-Identifier",clientsecret)
-                .asObject(Availability.class);
-        Availability availability = response.getBody();
+                .asObject(StationAvailability.class);
+        StationAvailability availability = response.getBody();
         return availability;
     }
 
