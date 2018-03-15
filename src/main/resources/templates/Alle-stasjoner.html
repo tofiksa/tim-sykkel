@@ -1,0 +1,17 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Oslo kommune bysykkeloversikt</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+
+
+<p th:each="allstation : ${allstations}"
+   th:text="${allstation.title}">
+</p>
+
+
+
+</body>
+</html>
