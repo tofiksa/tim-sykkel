@@ -2,6 +2,7 @@
 *.class
 .idea
 tim-sykkel.iml
+target
 
 # Log file
 *.log
