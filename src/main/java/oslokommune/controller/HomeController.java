@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import oslokommune.beans.Center;
 import oslokommune.beans.Station;
 import oslokommune.beans.StationAvailability;
 import oslokommune.util.UnirestClient;
@@ -21,11 +22,16 @@ public class HomeController {
     @Value("${client.secret}")
     private String clientsecret;
 
+    @Value("${google.api.key}")
+    private String googleapikey;
+
     @Autowired
     private Station station;
 
     @Autowired
     private StationAvailability stationAvailability;
+
+
 
     @GetMapping("/Alle-stasjoner")
     public String AlleStasjoner(Model model) {
@@ -83,18 +89,25 @@ public class HomeController {
 
         List<StationAvailability> allAvailabilities = getStationAvailability();
         List<Station> stations = getStations();
+        List<Center> centers;
+        String BASE_GOOGLE_API_URL = "https://maps.googleapis.com/maps/api/js?key="+googleapikey+"&callback=initMap&language=no&region=NO";
 
         for(StationAvailability sa : allAvailabilities) {
                 if (id == sa.getId()) {
                     model.addAttribute("allAvailabilities", sa);
 
                     for (Station s : stations) {
-                        if (id == s.getId())
-                            model.addAttribute("stations",s);
+                        if (id == s.getId()) {
+                            model.addAttribute("stations", s);
+
+                            model.addAttribute("lat", s.getCenter().getLatitude());
+                            model.addAttribute("lng", s.getCenter().getLongtitude());
+                        }
                     }
 
                 }
         }
+        model.addAttribute("apikey",BASE_GOOGLE_API_URL);
 
 
         return "Ledige-sykler";

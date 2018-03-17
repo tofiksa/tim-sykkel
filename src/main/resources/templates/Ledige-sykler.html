@@ -6,15 +6,92 @@
     <link rel="stylesheet"
           href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <style>
+        /* Always set the map height explicitly to define the size of the div
+         * element that contains the map. */
+        #map {
+            height: 50%;
+            width: 40%;
+        }
+        /* Optional: Makes the sample page fill the window. */
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        #save-widget {
+            width: 300px;
+            box-shadow: rgba(0, 0, 0, 0.298039) 0px 1px 4px -1px;
+            background-color: white;
+            padding: 10px;
+            font-family: Roboto, Arial;
+            font-size: 13px;
+            margin: 15px;
+        }
+    </style>
 </head>
 <body>
+<div style="float:left;">
 
-<p th:text="${stations.title}"></p>
-<p th:text="${stations.subtitle}"></p>
-Låser: <p th:text="${allAvailabilities.getBike().locks}"></p>
-Ledige sykler: <p th:text="${allAvailabilities.getBike().bikes}"></p>
+</div>
 
+<div id="map"></div>
+
+<div id="save-widget">
+    <strong th:text="${stations.title}"></strong>
+    <p th:text="${stations.subtitle}">
+    </p>
+    låser: <span th:text="${allAvailabilities.getBike().locks}"></span><br />
+    ledige sykler: <span th:text="${allAvailabilities.getBike().bikes}"></span><br />
+</div>
+
+<div style="float: left;">
+    <a href="/Alle-stasjoner">Alle stasjoner</a>
+</div>
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+
+    function initMap() {
+        var map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 17,
+            center: {lat: [[${lat}]], lng: [[${lng}]]},
+            mapTypeControlOptions: {
+                mapTypeIds: [
+                    'roadmap',
+                    'satellite'
+                ],
+                position: google.maps.ControlPosition.BOTTOM_LEFT
+            }
+        });
+
+        var widgetDiv = document.getElementById('save-widget');
+        map.controls[google.maps.ControlPosition.TOP_LEFT].push(widgetDiv);
+
+        // Append a Save Control to the existing save-widget div.
+        var saveWidget = new google.maps.SaveWidget(widgetDiv, {
+            place: {
+
+                placeId: 'ChIJOfBn8mFuQUYRmh4j019gkn4',
+                location: {lat: [[${lat}]], lng: [[${lng}]]}
+            },
+            attribution: {
+                source: 'Google Maps JavaScript API',
+                webUrl: 'https://developers.google.com/maps/'
+            }
+        });
+
+        var marker = new google.maps.Marker({
+            map: map,
+            position: saveWidget.getPlace().location
+        });
+    }
+    /*]]>*/
+</script>
+<script th:inline="javascript" th:src="${apikey}" async defer>
+</script>
 </body>
+
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
         integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
