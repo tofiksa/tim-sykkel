@@ -5,6 +5,7 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.ObjectMapper;
 import com.mashape.unirest.http.Unirest;
 
+import oslokommune.beans.AvailableStations;
 import oslokommune.beans.Bike;
 import oslokommune.beans.BikeStations;
 import oslokommune.beans.StationAvailability;
@@ -51,13 +52,13 @@ public class UnirestClient {
 
     }
 
-    public StationAvailability getAllAvailabilities(String endpoint, String clientsecret) throws Exception {
-        HttpResponse<StationAvailability> response = Unirest.get(BASE_URI+endpoint)
+    public AvailableStations getAllAvailabilities(String endpoint, String clientsecret) throws Exception {
+        HttpResponse<AvailableStations> response = Unirest.get(BASE_URI+endpoint)
                 .header("accept", "application/json")
                 .header("Content-Type", "application/json")
                 .header("Client-Identifier",clientsecret)
-                .asObject(StationAvailability.class);
-        StationAvailability availability = response.getBody();
+                .asObject(AvailableStations.class);
+        AvailableStations availability = response.getBody();
         return availability;
     }
 

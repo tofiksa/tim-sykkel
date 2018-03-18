@@ -13,5 +13,12 @@ public class StationKeys {
     public final static String LOCKS = "locks";
     public final static String UPDATED_AT = "updated_at";
     public final static String REFRESH_RATE = "refresh_rate";
+    public final static String CENTER = "center";
+    public final static String LATITUDE = "latitude";
+    public final static String LONGITUDE = "longitude";
+    public final static String BOUNDS = "bounds";
+    public final static String ALL_STATIONS_CLOSED = "all_stations_closed";
+    public final static String STATUS = "status";
+    public final static String STATIONS_CLOSED = "stations_closed";
 
 }

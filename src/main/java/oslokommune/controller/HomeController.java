@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import oslokommune.beans.Center;
 import oslokommune.beans.Station;
 import oslokommune.beans.StationAvailability;
 import oslokommune.util.UnirestClient;
@@ -21,46 +22,93 @@ public class HomeController {
     @Value("${client.secret}")
     private String clientsecret;
 
+    @Value("${google.api.key}")
+    private String googleapikey;
+
     @Autowired
     private Station station;
+
+    @Autowired
+    private StationAvailability stationAvailability;
+
+
 
     @GetMapping("/Alle-stasjoner")
     public String AlleStasjoner(Model model) {
 
-        List<Station> allStations = null;
+        List<Station> stations = getStations();
+        model.addAttribute("allstations",stations);
 
+        return "Alle-stasjoner";
+    }
+
+    public List<Station> getStations() {
+
+        List<Station> allStations = null;
+        List<Station> filtered = Lists.newArrayList();
 
         try {
             allStations = unirestClient.getAllStations("/stations",clientsecret).getStations();
-            List<Station> filtered = Lists.newArrayList();
+
 
             for(Station p : allStations) {
 
                 filtered.add(p);
             }
 
-            model.addAttribute("allstations",filtered);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return filtered;
+    }
+
+    public List<StationAvailability> getStationAvailability() {
+
+        List<StationAvailability> allBikes = null;
+        List<StationAvailability> filt = Lists.newArrayList();
+
+        try {
+            allBikes = unirestClient.getAllAvailabilities("/stations/availability",clientsecret).getStationAvailability();
+
+
+            for(StationAvailability p : allBikes) {
+                filt.add(p);
+            }
+
 
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        return "Alle-stasjoner";
+        return filt;
     }
 
     @GetMapping("/Ledige-sykler")
-    public String LedigeSykler (@RequestParam(name="id", required=false, defaultValue="185") int id, Model model) throws Exception {
+    public String LedigeSykler (@RequestParam(name="id", required=false, defaultValue="185") int id, Model model) {
 
-        List<StationAvailability> allBikes = null;
+        List<StationAvailability> allAvailabilities = getStationAvailability();
+        List<Station> stations = getStations();
+        List<Center> centers;
+        String BASE_GOOGLE_API_URL = "https://maps.googleapis.com/maps/api/js?key="+googleapikey+"&callback=initMap&language=no&region=NO";
 
-        try {
-            allBikes = unirestClient.getAllStations("/stations/availability",clientsecret).getStationAvailability();
+        for(StationAvailability sa : allAvailabilities) {
+                if (id == sa.getId()) {
+                    model.addAttribute("allAvailabilities", sa);
 
-            model.addAttribute("availability",allBikes);
+                    for (Station s : stations) {
+                        if (id == s.getId()) {
+                            model.addAttribute("stations", s);
 
-        } catch (Exception e) {
-            e.printStackTrace();
+                            model.addAttribute("lat", s.getCenter().getLatitude());
+                            model.addAttribute("lng", s.getCenter().getLongtitude());
+                        }
+                    }
+
+                }
         }
+        model.addAttribute("apikey",BASE_GOOGLE_API_URL);
+
 
         return "Ledige-sykler";
     }

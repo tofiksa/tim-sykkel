@@ -9,24 +9,23 @@ import java.util.List;
 
 @Component
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class BikeStations {
+public class AvailableStations {
 
     @JsonProperty(StationKeys.STATIONS)
-    private List<Station> stations;
+    private List<StationAvailability> StationAvailability;
 
-    public List<Station> getStations() {
-        return stations;
+    public List<StationAvailability> getStationAvailability() {
+        return StationAvailability;
     }
 
-    public void setStations(List<Station> stations) {
-        this.stations = stations;
+    public void setStationAvailability(List<StationAvailability> stationAvailability) {
+        StationAvailability = stationAvailability;
     }
-
 
     @Override
     public String toString() {
-        return "BikeStations{" +
-                "stations=" + stations +
+        return "AvailableStations{" +
+                "StationAvailability=" + StationAvailability +
                 '}';
     }
 }
