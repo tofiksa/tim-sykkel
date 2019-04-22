@@ -134,7 +134,7 @@ ${application.title}
 ${application.version}
 ${spring-boot.version}
 
-Author: https://www.hioa.no/tilsatt/tofik
+Author: https://www.linkedin.com/in/tofiks/
 
 
 
